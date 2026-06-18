@@ -1,7 +1,8 @@
 /* Table layout — the felt arranged for a single iPhone in portrait. */
 
 .app {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
