@@ -3,8 +3,10 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // Palette-derived theming. theme_color = brass rail, background_color = mahogany backdrop.
+// `base` is absolute in CI (GitHub Pages serves from /<repo>/) so the service worker
+// scope resolves correctly; locally it stays at '/'.
 export default defineConfig({
-  base: './',
+  base: process.env.VITE_BASE ?? '/',
   plugins: [
     react(),
     VitePWA({
