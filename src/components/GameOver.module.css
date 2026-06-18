@@ -1,0 +1,159 @@
+/* GameOver — quiet brass-framed night summary */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--table-light);
+  padding:
+    calc(var(--safe-top) + var(--gap-lg))
+    calc(var(--safe-right) + var(--gap-md))
+    calc(var(--safe-bottom) + var(--gap-lg))
+    calc(var(--safe-left) + var(--gap-md));
+  box-sizing: border-box;
+}
+
+/* ── Engraved heading plaque ────────────────────────────────────── */
+.header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--gap-xl);
+}
+
+.plaque {
+  background: var(--brass-surface);
+  border-radius: var(--radius-rail);
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+  padding: var(--gap-sm) var(--gap-xl);
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--mahogany);
+  margin: 0;
+}
+
+/* ── Body: table + summary line ─────────────────────────────────── */
+.body {
+  flex: 1;
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--felt-dark);
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-rail);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.table thead {
+  background: rgba(200, 162, 74, 0.12);
+  border-bottom: 1px solid var(--brass-dim);
+}
+
+.colName,
+.colDrinks {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--brass);
+  padding: var(--gap-sm) var(--gap-md);
+  text-align: left;
+  font-weight: 600;
+}
+
+.colDrinks {
+  text-align: right;
+}
+
+.row,
+.rowTop {
+  border-top: 1px solid rgba(138, 109, 51, 0.25);
+}
+
+.cellName {
+  font-family: var(--font-body);
+  font-size: var(--t-name);
+  color: var(--ivory);
+  padding: var(--gap-sm) var(--gap-md);
+}
+
+.cellDrinks {
+  font-family: var(--font-display);
+  font-size: var(--t-name);
+  color: var(--brass-lit);
+  text-align: right;
+  padding: var(--gap-sm) var(--gap-md);
+  font-weight: 700;
+}
+
+/* Top scorer row — subtle brass tint */
+.rowTop .cellName {
+  color: var(--ivory);
+}
+
+.rowTop .cellDrinks {
+  color: var(--oxblood-lit);
+}
+
+.summary {
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  color: var(--ivory-dim);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.footer {
+  max-width: 28rem;
+  width: 100%;
+  margin: var(--gap-lg) auto 0;
+}
+
+.newGameBtn {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: var(--brass-surface);
+  border: none;
+  border-radius: var(--radius-rail);
+  color: var(--mahogany);
+  font-family: var(--font-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+  transition: opacity 0.15s;
+}
+
+.newGameBtn:active {
+  opacity: 0.8;
+}
+
+.newGameBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .newGameBtn {
+    transition: none;
+  }
+}

@@ -1,0 +1,152 @@
+/* ─── ValueBoard ──────────────────────────────────────────────────────────── */
+
+/* ── Outer brass rail frame */
+.rail {
+  background: var(--brass-surface);
+  border-radius: var(--radius-rail);
+  padding: 2px;
+  box-shadow: var(--shadow-deep);
+}
+
+/* ── Inner felt surface */
+.board {
+  background: var(--table-light);
+  border-radius: calc(var(--radius-rail) - 2px);
+  padding: var(--gap-sm) var(--gap-sm) var(--gap-sm);
+  box-shadow: var(--inset-bevel);
+  overflow: hidden;
+}
+
+/* ── Eyebrow title */
+.title {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  color: var(--brass);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 var(--gap-sm);
+  opacity: 0.85;
+  user-select: none;
+}
+
+/* ── Column container — 13 columns, all visible, horizontal scroll fallback */
+.columns {
+  display: grid;
+  /* 13 equal columns, each at least 2.2rem wide, stretching to fill */
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* hide scrollbar visually but keep function */
+  scrollbar-width: none;
+}
+.columns::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Single value column */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+/* ── Value head — engraved brass label */
+.valueHead {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.22rem 0 0.18rem;
+  background: linear-gradient(180deg, rgba(200,162,74,0.22) 0%, rgba(200,162,74,0.06) 100%);
+  border-bottom: 1px solid var(--brass-dim);
+  border-radius: 3px 3px 0 0;
+  position: relative;
+}
+
+/* engraved inset shadow on the label */
+.valueHead::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.45), inset 0 -1px 0 rgba(255,246,222,0.12);
+  pointer-events: none;
+}
+
+.valueLabel {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brass-lit);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+  /* engraved text shadow */
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6), 0 -1px 0 rgba(255,246,222,0.2);
+}
+
+/* ── Card stack area within a column */
+.cardStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Negative overlap: cards fan downward with most recent on top */
+  gap: 0;
+  position: relative;
+  width: 100%;
+  min-height: 3.35rem; /* board card height — always reserves space */
+  padding: 1px 1px 2px;
+}
+
+/* Each card within the stack — overlapping */
+.stackItem {
+  position: relative;
+  /* pull each subsequent card up to overlap the previous */
+  margin-top: -1.9rem;
+  /* first child has no pull-up */
+}
+.stackItem:first-child {
+  margin-top: 0;
+}
+
+/* ── Count badge — appears when >1 card in slot */
+.countBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--brass-surface);
+  border: 1px solid var(--brass-dim);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.countNum {
+  font-family: var(--font-display);
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: var(--mahogany);
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Empty slot indicator */
+.emptySlot {
+  width: 2.4rem;
+  height: 3.35rem;
+  border-radius: var(--radius-card);
+  border: 1px dashed rgba(200,162,74,0.22);
+  background: rgba(0,0,0,0.12);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+}

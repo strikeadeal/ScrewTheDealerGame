@@ -1,0 +1,76 @@
+/* TurnStrip — who deals, who guesses, which call */
+
+.strip {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  background: var(--felt-dark);
+  border-bottom: 1px solid var(--brass-dim);
+  padding:
+    calc(var(--safe-top) + var(--gap-sm))
+    calc(var(--safe-right) + var(--gap-md))
+    var(--gap-sm)
+    calc(var(--safe-left) + var(--gap-md));
+  min-height: calc(var(--tap) + var(--gap-sm));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Seat block (dealer + guesser) ──────────────────────────────── */
+.seat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+
+.seat:last-child {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.role {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.name {
+  font-family: var(--font-body);
+  font-size: var(--t-name);
+  color: var(--ivory);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 11rem;
+  line-height: 1.15;
+}
+
+/* ── Center: arrow + optional call badge ────────────────────────── */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-xs);
+  flex-shrink: 0;
+}
+
+.arrow {
+  color: var(--brass-dim);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.callBadge {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--brass-lit);
+  background: rgba(200, 162, 74, 0.12);
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--gap-sm);
+  white-space: nowrap;
+}

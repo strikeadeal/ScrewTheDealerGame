@@ -1,0 +1,68 @@
+/* ValuePad — 13 thumb-tap value keys, engraved brass on felt */
+
+.pad {
+  display: grid;
+  /* 7 columns so A–7 on row 1, 8–K (6) on row 2 */
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--gap-sm);
+  padding: var(--gap-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Keys 8–13 (8,9,10,J,Q,K) — 6 items in second row.
+   Push them to centre by spanning into a 7-col grid with 1-col offset on each side.
+   We do this by placing the 8th key at column 2. */
+.key:nth-child(8) {
+  grid-column: 2;
+}
+
+.key {
+  min-height: var(--tap);
+  /* Expand a touch on wider screens */
+  height: clamp(var(--tap), 12vw, 64px);
+  background: var(--brass-surface);
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-card);
+  color: var(--mahogany);
+  font-family: var(--font-display);
+  font-size: clamp(var(--t-label), 4vw, var(--t-card));
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft), var(--inset-bevel);
+  transition: opacity 0.1s, transform 0.1s var(--ease-deal);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key:not(:disabled):active {
+  opacity: 0.75;
+  transform: scale(0.94);
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 2px;
+}
+
+/* Excluded: visible but clearly unavailable */
+.key.excluded,
+.key:disabled {
+  opacity: 0.28;
+  cursor: default;
+  box-shadow: none;
+  background: var(--felt-dark);
+  color: var(--ivory-dim);
+  border-color: var(--brass-dim);
+}
+
+/* If the whole pad is disabled but not excluded, show as uniform dim */
+.key:disabled:not(.excluded) {
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key {
+    transition: none;
+  }
+}

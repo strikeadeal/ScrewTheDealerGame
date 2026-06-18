@@ -1,0 +1,185 @@
+/*
+ * SCREW THE DEALER — App Shell
+ * Derives entirely from tokens.css variables (imported before this in main.tsx).
+ * Frames the game as a real felt table behind brass rails on a dark wood backdrop.
+ *
+ * Fonts (Cinzel, Spectral) and tokens.css are imported by main.tsx first;
+ * this file only adds the structural shell on top.
+ */
+
+/* ── Box-sizing reset ───────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Button baseline (components supply their own chrome) ───────────────── */
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Root viewport: mahogany wood behind everything ─────────────────────── */
+/* Any overscroll, safe-area gutters, or letterboxing shows dark wood,       */
+/* never bare white.                                                          */
+html {
+  height: 100%;
+  background-color: var(--mahogany);
+  /* Prevent rubber-band / scroll-bounce exposing the OS background */
+  overscroll-behavior: none;
+}
+
+body {
+  height: 100%;
+  background-color: var(--mahogany);
+
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--ivory);
+  line-height: 1.5;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  /* Kill rubber-band scroll; felt should feel anchored */
+  overscroll-behavior: none;
+
+  /* No callout menus on long-press (links, images) */
+  -webkit-touch-callout: none;
+
+  /* Double-tap zoom: gone. Single taps respond instantly. */
+  touch-action: manipulation;
+
+  /* No text selection while playing cards */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Root mount ─────────────────────────────────────────────────────────── */
+#root {
+  /*
+   * Full viewport including safe areas so the mahogany/felt bleeds behind
+   * the notch (Dynamic Island) at the top and the home indicator at the bottom.
+   */
+  min-height: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  /*
+   * THE FELT TABLE with BRASS RAIL framing.
+   *
+   * Background: overhead-lit felt radial gradient.
+   * Border: the brass rail — a burnished gradient "edge" around the playable area.
+   * The border bleeds over safe-area insets so the rail never hides behind the notch.
+   * Box-shadow: inset bevel for depth (highlights the top lip, recesses the bottom).
+   */
+  background: var(--table-light);
+
+  /* Brass rail — thick enough to feel physical */
+  border: 6px solid transparent;
+  border-image: var(--brass-surface) 1;
+  /* Fallback for border-image (solid brass mid-tone) */
+  outline: 6px solid var(--brass);
+  outline-offset: -6px;
+
+  box-shadow: var(--inset-bevel), var(--shadow-deep);
+
+  /*
+   * SAFE-AREA PADDING: content stays inside notch / Dynamic Island / home bar.
+   * The background + border extend full-bleed; only padding shifts content.
+   */
+  padding-top: calc(var(--safe-top) + var(--gap-md));
+  padding-bottom: calc(var(--safe-bottom) + var(--gap-md));
+  padding-left: calc(var(--safe-left) + var(--gap-md));
+  padding-right: calc(var(--safe-right) + var(--gap-md));
+
+  /* Page-load fade-in: subtle, like a lamp warming up */
+  animation: root-fade-in 420ms var(--ease-deal) both;
+}
+
+@keyframes root-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Disable the entrance animation under reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  #root {
+    animation: none;
+  }
+}
+
+/* ── Allow text selection in the player-name input ─────────────────────── */
+input[type='text'],
+input[type='search'],
+input:not([type]) {
+  user-select: text;
+  -webkit-user-select: text;
+  touch-action: auto; /* let iOS raise the keyboard normally */
+}
+
+/* ── Global keyboard focus ──────────────────────────────────────────────── */
+/* Brass highlight — visible only when navigating by keyboard / switch access */
+:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Strip focus ring from mouse/touch interactions */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Utility classes ────────────────────────────────────────────────────── */
+
+/*
+ * .plaque — engraved brass-plaque eyebrow label.
+ * Cinzel caps, tracked wide, ivory-dim. Use for section headers, labels.
+ */
+.plaque {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  font-weight: 600;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+
+/*
+ * .brass-text — accent text in brass colour, e.g. inline highlights.
+ */
+.brass-text {
+  color: var(--brass);
+}
+
+/*
+ * .sr-only — visually hidden, screen-reader accessible.
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

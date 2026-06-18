@@ -1,0 +1,94 @@
+/*
+ * SCREW THE DEALER — Design Tokens
+ * A late-night back-room card table: worn forest felt, a brass rail, aged-ivory
+ * cards, dark mahogany. Every colour and type decision in the app derives from here.
+ */
+
+:root {
+  /* ── Palette (6 named values + ink) ───────────────────────────────── */
+  --mahogany: #241510;   /* deepest wood — app backdrop, behind the felt   */
+  --felt: #1f4233;       /* the table surface                              */
+  --felt-dark: #14271e;  /* felt in shadow — vignette, recesses            */
+  --felt-lit: #2a5641;   /* felt under the light — raised areas            */
+  --brass: #c8a24a;      /* the rail, engraving, gold accents              */
+  --brass-dim: #8a6d33;  /* brass in shadow — borders, bevels              */
+  --brass-lit: #e6c878;  /* brass catching light — highlights, focus       */
+  --ivory: #ede3cc;      /* aged card face, primary text on felt           */
+  --ivory-dim: #b9ad92;  /* secondary text, quiet labels                   */
+  --oxblood: #8c2f22;    /* red pips, drink-danger emphasis                */
+  --oxblood-lit: #b8463a;/* red emphasis catching light                    */
+  --ink: #1a1410;        /* numerals / pips printed on ivory               */
+
+  /* ── Type ─────────────────────────────────────────────────────────── */
+  /* Display: engraved Roman caps, like a brass plaque. Used with restraint. */
+  --font-display: 'Cinzel', 'Georgia', serif;
+  /* Body / utility: warm transitional serif, legible at arm's length.      */
+  --font-body: 'Spectral', 'Georgia', serif;
+
+  /* Type scale (mobile-first, arm's-length legibility) */
+  --t-plaque: 0.78rem;   /* engraved eyebrow caps, tracked                  */
+  --t-label: 0.95rem;    /* utility labels                                 */
+  --t-body: 1.05rem;     /* running copy                                   */
+  --t-name: 1.35rem;     /* player names                                   */
+  --t-card: 2.1rem;      /* card numerals on the board                     */
+  --t-verdict: 2.2rem;   /* verdict headline                               */
+  --t-count: 4.2rem;     /* the drink count — biggest thing on screen      */
+
+  --track-plaque: 0.22em; /* letterspacing for engraved caps               */
+  --track-label: 0.08em;
+
+  /* ── Spacing & form ───────────────────────────────────────────────── */
+  --gap-xs: 0.35rem;
+  --gap-sm: 0.6rem;
+  --gap-md: 1rem;
+  --gap-lg: 1.5rem;
+  --gap-xl: 2.25rem;
+
+  --radius-card: 10px;   /* playing-card corner                            */
+  --radius-rail: 14px;   /* brass rail framing                             */
+  --radius-pill: 999px;
+
+  --tap: 48px;           /* minimum thumb target                           */
+
+  /* Safe areas (notch / Dynamic Island / home indicator) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* ── Light & texture ──────────────────────────────────────────────── */
+  /* The overhead light pooling on the felt */
+  --table-light: radial-gradient(
+    120% 80% at 50% 14%,
+    var(--felt-lit) 0%,
+    var(--felt) 38%,
+    var(--felt-dark) 100%
+  );
+  /* A brass surface with a bevelled, burnished gradient */
+  --brass-surface: linear-gradient(
+    160deg,
+    var(--brass-lit) 0%,
+    var(--brass) 42%,
+    var(--brass-dim) 100%
+  );
+  /* Aged ivory card paper */
+  --card-paper: linear-gradient(170deg, #f3ecda 0%, var(--ivory) 55%, #ddd0b3 100%);
+
+  --shadow-deep: 0 18px 40px rgba(0, 0, 0, 0.55);
+  --shadow-soft: 0 6px 16px rgba(0, 0, 0, 0.4);
+  --inset-bevel: inset 0 1px 0 rgba(255, 246, 222, 0.35),
+                 inset 0 -2px 4px rgba(0, 0, 0, 0.35);
+
+  /* Motion — deliberate, never frantic */
+  --ease-deal: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --flip-dur: 620ms;
+
+  color-scheme: dark;
+}
+
+/* Reduced motion: collapse deliberate motion to instant. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --flip-dur: 0ms;
+  }
+}
