@@ -1,0 +1,138 @@
+/* Verdict — full-screen drink prompt, oxblood danger moment */
+
+.revealed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-xs);
+}
+
+.revealedLabel {
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  color: var(--ivory-dim);
+}
+
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 4, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-lg) var(--gap-md);
+  box-sizing: border-box;
+  z-index: 100;
+  /* Fade in */
+  animation: fadeIn 0.22s var(--ease-deal) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+}
+
+.card {
+  background: var(--felt-dark);
+  border: 2px solid var(--oxblood);
+  border-radius: var(--radius-rail);
+  box-shadow: var(--shadow-deep), 0 0 40px rgba(140, 47, 34, 0.45);
+  padding: var(--gap-lg) var(--gap-lg);
+  max-width: 22rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  text-align: center;
+}
+
+/* "{name} drinks" — clear attribution above the count */
+.whoLine {
+  font-family: var(--font-body);
+  font-size: var(--t-verdict);
+  color: var(--ivory);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* DRINK + large number */
+.countWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+  background: rgba(140, 47, 34, 0.18);
+  border-radius: var(--radius-card);
+  padding: var(--gap-sm) var(--gap-xl);
+}
+
+.drinkLabel {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--oxblood-lit);
+}
+
+.count {
+  font-family: var(--font-display);
+  font-size: var(--t-count);
+  font-weight: 700;
+  color: var(--oxblood-lit);
+  line-height: 1;
+  /* Subtle glow */
+  text-shadow: 0 0 24px rgba(184, 70, 58, 0.55);
+}
+
+/* Reason line — quiet, below the number */
+.reason {
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  color: var(--ivory-dim);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* "Pass the deal" button */
+.nextBtn {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: var(--brass-surface);
+  border: none;
+  border-radius: var(--radius-rail);
+  color: var(--mahogany);
+  font-family: var(--font-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft), var(--inset-bevel);
+  margin-top: var(--gap-sm);
+  transition: opacity 0.15s;
+}
+
+.nextBtn:active {
+  opacity: 0.8;
+}
+
+.nextBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nextBtn {
+    transition: none;
+  }
+}

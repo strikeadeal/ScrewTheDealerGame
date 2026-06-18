@@ -1,0 +1,223 @@
+/* ─── PlayingCard ─────────────────────────────────────────────────────────── */
+
+/* Paper-grain texture via layered subtle gradients */
+@keyframes none {}
+
+/* ── Outer shell (the "card slot" — sets perspective) */
+.card {
+  perspective: 900px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* stage size — the main draw area */
+.stage {
+  width: 7.5rem;   /* ~120px */
+  height: 10.5rem; /* ~168px */
+}
+
+/* board size — compact stack in the value board */
+.board {
+  width: 2.4rem;
+  height: 3.35rem;
+}
+
+/* ── The flipping inner container */
+.inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--flip-dur) var(--ease-deal);
+  border-radius: var(--radius-card);
+}
+
+.faceUp .inner {
+  transform: rotateY(180deg);
+}
+
+/* ── Shared face / back base */
+.face,
+.back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD FACE — aged ivory paper
+═══════════════════════════════════════════════════════════ */
+.face {
+  background: var(--card-paper);
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+  display: flex;
+  flex-direction: column;
+  /* Rotated face is already rotated 180deg via the inner flip; apply counter here */
+  transform: rotateY(180deg);
+  /* Paper grain: faint noise overlay via SVG data-uri */
+  background-image:
+    /* grain layer */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23noise)' opacity='0.055'/%3E%3C/svg%3E"),
+    /* base card paper gradient */
+    linear-gradient(170deg, #f3ecda 0%, var(--ivory) 55%, #ddd0b3 100%);
+  background-size: 160px 160px, 100% 100%;
+}
+
+/* ── Corner index: top-left */
+.cornerTL,
+.cornerBR {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  gap: 0.06em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  user-select: none;
+}
+
+.cornerTL {
+  top: 0.28rem;
+  left: 0.3rem;
+}
+
+/* Bottom-right corner — rotated 180° */
+.cornerBR {
+  bottom: 0.28rem;
+  right: 0.3rem;
+  transform: rotate(180deg);
+}
+
+/* stage-size corners */
+.stage .cornerTL,
+.stage .cornerBR {
+  font-size: 1.05rem;
+}
+.stage .cornerSuit {
+  font-size: 0.75rem;
+}
+
+/* board-size corners */
+.board .cornerTL,
+.board .cornerBR {
+  font-size: 0.48rem;
+  gap: 0.04em;
+  top: 0.1rem;
+  left: 0.12rem;
+}
+.board .cornerBR {
+  bottom: 0.1rem;
+  right: 0.12rem;
+  top: auto;
+  left: auto;
+}
+.board .cornerSuit {
+  font-size: 0.36rem;
+}
+
+.cornerSuit {
+  line-height: 1;
+}
+
+/* colour variants */
+.red {
+  color: var(--oxblood);
+}
+
+.black {
+  color: var(--ink);
+}
+
+/* ── Center pip / index area */
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1rem;
+}
+
+/* stage: big center */
+.stage .center {
+  padding: 0.2rem;
+}
+
+/* ── Center pip grid for numeric cards */
+.pipGrid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+}
+
+/* Pip size in stage */
+.stage .pip {
+  font-size: 1.4rem;
+  line-height: 1;
+  user-select: none;
+}
+/* Pip size in board */
+.board .pip {
+  font-size: 0.55rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Large engraved center index for A, J, Q, K */
+.centerIndex {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  user-select: none;
+  opacity: 0.88;
+  /* subtle engraved look: text-shadow inner highlight */
+  text-shadow: 0 1px 0 rgba(255,246,222,0.5), 0 -1px 2px rgba(0,0,0,0.25);
+}
+
+.stage .centerIndex {
+  font-size: 3.2rem;
+}
+.board .centerIndex {
+  font-size: 1.1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD BACK — brass woven lattice
+═══════════════════════════════════════════════════════════ */
+.back {
+  background:
+    /* woven diagonal lattice */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 4px,
+      rgba(200, 162, 74, 0.18) 4px,
+      rgba(200, 162, 74, 0.18) 5px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 4px,
+      rgba(200, 162, 74, 0.14) 4px,
+      rgba(200, 162, 74, 0.14) 5px
+    ),
+    /* base warm mahogany-to-brass-dim */
+    linear-gradient(160deg, var(--brass-dim) 0%, #4a2e14 50%, var(--mahogany) 100%);
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+}
+
+/* Thin brass border inset on the back */
+.back::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--radius-card) - 3px);
+  border: 1.5px solid rgba(200, 162, 74, 0.55);
+  pointer-events: none;
+}
