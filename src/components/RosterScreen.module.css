@@ -1,15 +1,11 @@
 /* RosterScreen — title moment, player roster, start */
 
 .screen {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  background: var(--table-light);
-  padding:
-    calc(var(--safe-top) + var(--gap-lg))
-    calc(var(--safe-right) + var(--gap-md))
-    calc(var(--safe-bottom) + var(--gap-lg))
-    calc(var(--safe-left) + var(--gap-md));
+  /* The shell (#root) already owns viewport height + safe-area insets. */
+  padding: var(--gap-lg) 0;
   box-sizing: border-box;
 }
 

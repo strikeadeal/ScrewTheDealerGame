@@ -5,13 +5,11 @@
   align-items: center;
   gap: var(--gap-sm);
   background: var(--felt-dark);
-  border-bottom: 1px solid var(--brass-dim);
-  padding:
-    calc(var(--safe-top) + var(--gap-sm))
-    calc(var(--safe-right) + var(--gap-md))
-    var(--gap-sm)
-    calc(var(--safe-left) + var(--gap-md));
-  min-height: calc(var(--tap) + var(--gap-sm));
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-card);
+  /* The shell (#root) already clears the notch; just pad for touch comfort. */
+  padding: var(--gap-sm) var(--gap-md);
+  min-height: var(--tap);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
