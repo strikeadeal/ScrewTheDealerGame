@@ -66,17 +66,12 @@ body {
 /* ── Root mount ─────────────────────────────────────────────────────────── */
 #root {
   /*
-   * Fixed to the *visible* viewport. dvh tracks Safari's collapsing toolbars so
-   * the frame never hides behind them; vh is the fallback. This is a hard height
-   * (not min-height) plus overflow:hidden so the brass rail is pinned to the
-   * screen edges and can never grow past them when a tall state — like the value
-   * pad — appears. The flexible card stage inside absorbs the slack instead.
-   * The shell — and only the shell — owns viewport height and the safe-area
-   * insets below; screens just fill it.
+   * Full *visible* viewport. dvh tracks Safari's collapsing toolbars so content
+   * never hides behind them; vh is the fallback. The shell — and only the shell —
+   * owns viewport height and the safe-area insets below; screens just fill it.
    */
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   display: flex;
   flex-direction: column;

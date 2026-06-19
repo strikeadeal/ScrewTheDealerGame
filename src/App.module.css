@@ -15,9 +15,6 @@
   flex-direction: column;
   gap: var(--gap-sm);
   padding: var(--gap-sm) var(--gap-md);
-  /* Header, turn strip, controls and the Board stay pinned; only the card
-     stage flexes. Clip rather than grow the frame if a short phone runs out. */
-  overflow: hidden;
 }
 
 /* Header: three ghost buttons in one compact row — Undo | [Tally + End] */
@@ -76,24 +73,13 @@
   color: var(--brass-lit);
 }
 
-/* The stage takes the slack so the card sits in the pool of light. It is the
-   one flexible region: it shrinks first, and if a short screen still can't fit
-   the card it scrolls *within* the fixed frame rather than pushing the rail off
-   the screen. The child's auto block margins centre it when there's room and
-   collapse when there isn't, so the top never clips (the classic flex-centre +
-   overflow fix). */
+/* The stage takes the slack so the card sits in the pool of light. */
 .stage {
   flex: 1;
   min-height: 0;
   display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.stage > * {
-  margin: auto 0;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .controls {
