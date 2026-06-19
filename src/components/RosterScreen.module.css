@@ -2,8 +2,13 @@
 
 .screen {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  /* The shell (#root) now has a fixed height and clips overflow, so this screen
+     scrolls internally when the roster grows past the frame. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
   /* The shell (#root) already owns viewport height + safe-area insets. */
   padding: var(--gap-lg) 0;
   box-sizing: border-box;
