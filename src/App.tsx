@@ -1,4 +1,5 @@
-import { useGame, getDealer, getGuesser, getCallNumber } from './game/useGame'
+import { useState } from 'react'
+import { useGame, getDealer, getGuesser, getCallNumber, canUndo } from './game/useGame'
 import RosterScreen from './components/RosterScreen'
 import TurnStrip from './components/TurnStrip'
 import CardStage from './components/CardStage'
@@ -6,6 +7,8 @@ import ValuePad from './components/ValuePad'
 import ValueBoard from './components/ValueBoard'
 import Verdict from './components/Verdict'
 import GameOver from './components/GameOver'
+import ScoreBoard from './components/ScoreBoard'
+import ConfirmDialog from './components/ConfirmDialog'
 import styles from './App.module.css'
 
 export default function App() {
@@ -13,6 +16,9 @@ export default function App() {
   const dealer = getDealer(state)
   const guesser = getGuesser(state)
   const callNumber = getCallNumber(state)
+
+  const [showTally, setShowTally] = useState(false)
+  const [showEndConfirm, setShowEndConfirm] = useState(false)
 
   if (state.phase === 'roster') {
     return (
@@ -22,6 +28,8 @@ export default function App() {
           onAdd={(name) => dispatch({ type: 'addPlayer', name })}
           onRemove={(id) => dispatch({ type: 'removePlayer', id })}
           onStart={() => dispatch({ type: 'startGame' })}
+          onRename={(id, name) => dispatch({ type: 'renamePlayer', id, name })}
+          onMove={(id, direction) => dispatch({ type: 'movePlayer', id, direction })}
         />
       </main>
     )
@@ -41,6 +49,7 @@ export default function App() {
 
   // Active table: ready / firstCall / higherLower / verdict
   const isCalling = state.phase === 'firstCall' || state.phase === 'higherLower'
+  const undoEnabled = canUndo(state)
 
   const prompt =
     state.phase === 'ready'
@@ -57,11 +66,32 @@ export default function App() {
         <header className={styles.head}>
           <button
             type="button"
-            className={styles.endBtn}
-            onClick={() => dispatch({ type: 'endGame' })}
+            className={styles.ghostBtn}
+            onClick={() => dispatch({ type: 'undo' })}
+            disabled={!undoEnabled}
+            aria-disabled={!undoEnabled}
+            aria-label="Undo last action"
           >
-            End the night
+            ↶ Undo
           </button>
+
+          <div className={styles.headRight}>
+            <button
+              type="button"
+              className={styles.ghostBtn}
+              onClick={() => setShowTally(true)}
+              aria-label="View standings"
+            >
+              Tally
+            </button>
+            <button
+              type="button"
+              className={styles.ghostBtn}
+              onClick={() => setShowEndConfirm(true)}
+            >
+              End
+            </button>
+          </div>
         </header>
 
         <TurnStrip
@@ -69,6 +99,7 @@ export default function App() {
           guesserName={guesser?.name ?? '—'}
           callNumber={callNumber}
           phase={state.phase}
+          cardsLeft={state.deck.length}
         />
 
         {state.reshuffled && (
@@ -118,6 +149,29 @@ export default function App() {
             'Someone'
           }
           onNext={() => dispatch({ type: 'nextRound' })}
+        />
+      )}
+
+      {showTally && (
+        <ScoreBoard
+          players={state.players}
+          tally={state.tally}
+          onClose={() => setShowTally(false)}
+        />
+      )}
+
+      {showEndConfirm && (
+        <ConfirmDialog
+          title="End the night?"
+          body="This tallies up the drinks and closes out the round."
+          confirmLabel="End the night"
+          cancelLabel="Keep playing"
+          tone="danger"
+          onConfirm={() => {
+            setShowEndConfirm(false)
+            dispatch({ type: 'endGame' })
+          }}
+          onCancel={() => setShowEndConfirm(false)}
         />
       )}
     </main>

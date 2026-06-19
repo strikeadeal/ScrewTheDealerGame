@@ -1,0 +1,159 @@
+/* ConfirmDialog — generic confirmation overlay, modelled on Verdict */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 4, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--safe-top) + var(--gap-lg)) var(--gap-md)
+           calc(var(--safe-bottom) + var(--gap-lg));
+  box-sizing: border-box;
+  z-index: 110;
+  animation: fadeIn 0.22s var(--ease-deal) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+}
+
+.card {
+  background: var(--felt-dark);
+  border: 2px solid var(--brass-dim);
+  border-radius: var(--radius-rail);
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+  padding: var(--gap-lg);
+  max-width: 22rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  text-align: center;
+}
+
+/* Dialog title */
+.title {
+  font-family: var(--font-display);
+  font-size: var(--t-verdict);
+  font-weight: 700;
+  letter-spacing: var(--track-label);
+  color: var(--ivory);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Optional body copy */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  color: var(--ivory-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Button row */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  width: 100%;
+  margin-top: var(--gap-xs);
+}
+
+/* ── Confirm button: danger (oxblood) variant ────────────────────── */
+.confirmDanger {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: linear-gradient(160deg, var(--oxblood-lit) 0%, var(--oxblood) 60%);
+  border: 1px solid var(--oxblood);
+  border-radius: var(--radius-rail);
+  color: var(--ivory);
+  font-family: var(--font-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 200, 180, 0.22);
+  transition: opacity 0.15s;
+}
+
+.confirmDanger:active {
+  opacity: 0.85;
+}
+
+.confirmDanger:focus-visible {
+  outline: 2px solid var(--oxblood-lit);
+  outline-offset: 3px;
+}
+
+/* ── Confirm button: normal (brass) variant ──────────────────────── */
+.confirmNormal {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: var(--brass-surface);
+  border: none;
+  border-radius: var(--radius-rail);
+  color: var(--mahogany);
+  font-family: var(--font-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft), var(--inset-bevel);
+  transition: opacity 0.15s;
+}
+
+.confirmNormal:active {
+  opacity: 0.8;
+}
+
+.confirmNormal:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+}
+
+/* ── Cancel button: quiet ghost ──────────────────────────────────── */
+.cancelBtn {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: transparent;
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-rail);
+  color: var(--ivory-dim);
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.cancelBtn:active {
+  color: var(--ivory);
+  border-color: var(--brass);
+}
+
+.cancelBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirmDanger,
+  .confirmNormal,
+  .cancelBtn {
+    transition: none;
+  }
+}

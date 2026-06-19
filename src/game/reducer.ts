@@ -25,6 +25,7 @@ export function createInitialState(): GameState {
     outcome: null,
     tally: {},
     reshuffled: false,
+    past: [],
   }
 }
 
@@ -44,7 +45,27 @@ export function getCallNumber(s: GameState): 1 | 2 {
   return s.phase === 'higherLower' ? 2 : 1
 }
 
+export function canUndo(s: GameState): boolean {
+  return s.past.length > 0
+}
+
 // ─── reducer ──────────────────────────────────────────────────────────────────
+
+/**
+ * Produce a snapshot of `s` suitable for pushing onto the undo stack.
+ * The snapshot's own `past` is cleared to avoid unbounded nesting.
+ */
+function snapshot(s: GameState): GameState {
+  return { ...s, past: [] }
+}
+
+/**
+ * Prepend the current snapshot to an existing past array, capping at 10 entries.
+ * Oldest entries are dropped when the cap is exceeded.
+ */
+function pushPast(current: GameState, existingPast: GameState[]): GameState[] {
+  return [snapshot(current), ...existingPast].slice(0, 10)
+}
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
   // Clear reshuffled flag on every action except the one that sets it.
@@ -72,6 +93,27 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       }
     }
 
+    case 'renamePlayer': {
+      const name = action.name.trim()
+      if (!name) return base
+      return {
+        ...base,
+        players: base.players.map((p) =>
+          p.id === action.id ? { ...p, name } : p,
+        ),
+      }
+    }
+
+    case 'movePlayer': {
+      const idx = base.players.findIndex((p) => p.id === action.id)
+      if (idx === -1) return base
+      const swapIdx = action.direction === 'up' ? idx - 1 : idx + 1
+      if (swapIdx < 0 || swapIdx >= base.players.length) return base
+      const players = base.players.slice()
+      ;[players[idx], players[swapIdx]] = [players[swapIdx], players[idx]]
+      return { ...base, players }
+    }
+
     case 'startGame': {
       if (base.players.length < 2) return base
       return {
@@ -86,6 +128,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         dealerIndex: 0,
         phase: 'ready',
         reshuffled: false,
+        past: [], // cannot undo across a game start
       }
     }
 
@@ -101,6 +144,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const drawn = deck[deck.length - 1]
       const newDeck = deck.slice(0, deck.length - 1)
 
+      // drawCard builds from state (not base) because of the reshuffled-flag
+      // handling — preserve that; just add the updated past alongside.
       return {
         ...state,
         reshuffled,
@@ -110,6 +155,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         firstGuess: null,
         hint: null,
         outcome: null,
+        past: pushPast(state, state.past),
       }
     }
 
@@ -121,6 +167,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const dealer = getDealer(base)
       const guesser = getGuesser(base)
       if (!dealer || !guesser) return base
+
+      const nextPast = pushPast(state, base.past)
 
       if (base.phase === 'firstCall') {
         if (value === card.value) {
@@ -138,6 +186,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
               [dealer.id]: (base.tally[dealer.id] ?? 0) + 4,
             },
             phase: 'verdict',
+            past: nextPast,
           }
         }
         // Wrong first call — give hint.
@@ -146,6 +195,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           firstGuess: value,
           hint: directionFor(value, card.value),
           phase: 'higherLower',
+          past: nextPast,
         }
       }
 
@@ -165,6 +215,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
               [dealer.id]: (base.tally[dealer.id] ?? 0) + 2,
             },
             phase: 'verdict',
+            past: nextPast,
           }
         }
         // Wrong second call — guesser drinks 1.
@@ -181,6 +232,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             [guesser.id]: (base.tally[guesser.id] ?? 0) + 1,
           },
           phase: 'verdict',
+          past: nextPast,
         }
       }
 
@@ -202,18 +254,27 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         hint: null,
         outcome: null,
         phase: 'ready',
+        past: pushPast(state, base.past),
       }
     }
 
     case 'endGame': {
-      return { ...base, phase: 'gameOver' }
+      return { ...base, phase: 'gameOver', past: [] } // cannot undo across game end
     }
 
     case 'newGame': {
       return {
         ...createInitialState(),
         players: base.players,
+        // past stays [] from createInitialState — cannot undo across newGame
       }
+    }
+
+    case 'undo': {
+      if (base.past.length === 0) return base
+      const [prev, ...remaining] = base.past
+      // Restore snapshot; attach the shortened history so further undos work.
+      return { ...prev, past: remaining, reshuffled: false }
     }
 
     default: {

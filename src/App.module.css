@@ -17,28 +17,52 @@
   padding: var(--gap-sm) var(--gap-md);
 }
 
-/* Title plaque + quiet end-game control share the top line. */
+/* Header: three ghost buttons in one compact row — Undo | [Tally + End] */
 .head {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: var(--gap-xs);
+  flex-wrap: wrap;
 }
 
-.endBtn {
+.headRight {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+}
+
+/* Shared ghost button — brass outline, transparent fill */
+.ghostBtn {
   font-family: var(--font-body);
   font-size: var(--t-label);
   color: var(--ivory-dim);
   background: transparent;
   border: 1px solid var(--brass-dim);
   border-radius: var(--radius-pill);
-  padding: 0.4rem 0.85rem;
+  padding: 0 0.85rem;
   min-height: var(--tap);
   cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.12s, border-color 0.12s;
 }
 
-.endBtn:active {
+.ghostBtn:active {
   color: var(--ivory);
   border-color: var(--brass);
+}
+
+/* Disabled state for Undo when nothing to undo */
+.ghostBtn:disabled,
+.ghostBtn[aria-disabled='true'] {
+  opacity: 0.38;
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghostBtn {
+    transition: none;
+  }
 }
 
 .reshuffle {
