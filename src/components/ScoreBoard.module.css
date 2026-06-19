@@ -1,0 +1,150 @@
+/* ScoreBoard — live standings overlay, modelled on Verdict */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 4, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--safe-top) + var(--gap-lg)) var(--gap-md)
+           calc(var(--safe-bottom) + var(--gap-lg));
+  box-sizing: border-box;
+  z-index: 100;
+  animation: fadeIn 0.22s var(--ease-deal) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+}
+
+.panel {
+  background: var(--felt-dark);
+  border: 2px solid var(--brass-dim);
+  border-radius: var(--radius-rail);
+  box-shadow: var(--shadow-deep), var(--inset-bevel);
+  padding: var(--gap-lg);
+  max-width: 22rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+/* ── Engraved heading plaque ─────────────────────────────────────── */
+.plaqueWrap {
+  background: var(--brass-surface);
+  border-radius: var(--radius-rail);
+  box-shadow: var(--shadow-soft), var(--inset-bevel);
+  padding: var(--gap-xs) var(--gap-xl);
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  font-weight: 600;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--mahogany);
+  margin: 0;
+}
+
+/* ── Standings table ─────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--felt-dark);
+  border: 1px solid var(--brass-dim);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.table thead {
+  background: rgba(200, 162, 74, 0.12);
+  border-bottom: 1px solid var(--brass-dim);
+}
+
+.colName,
+.colDrinks {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--brass);
+  padding: var(--gap-sm) var(--gap-md);
+  text-align: left;
+  font-weight: 600;
+}
+
+.colDrinks {
+  text-align: right;
+}
+
+.row,
+.rowTop {
+  border-top: 1px solid rgba(138, 109, 51, 0.25);
+}
+
+.cellName {
+  font-family: var(--font-body);
+  font-size: var(--t-name);
+  color: var(--ivory);
+  padding: var(--gap-sm) var(--gap-md);
+}
+
+.cellDrinks {
+  font-family: var(--font-display);
+  font-size: var(--t-name);
+  color: var(--brass-lit);
+  text-align: right;
+  padding: var(--gap-sm) var(--gap-md);
+  font-weight: 700;
+}
+
+/* Top scorer — brass highlight */
+.rowTop .cellDrinks {
+  color: var(--oxblood-lit);
+}
+
+/* ── Close button ────────────────────────────────────────────────── */
+.closeBtn {
+  min-height: var(--tap);
+  width: 100%;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: var(--brass-surface);
+  border: none;
+  border-radius: var(--radius-rail);
+  color: var(--mahogany);
+  font-family: var(--font-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft), var(--inset-bevel);
+  transition: opacity 0.15s;
+}
+
+.closeBtn:active {
+  opacity: 0.8;
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closeBtn {
+    transition: none;
+  }
+}

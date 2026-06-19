@@ -90,6 +90,15 @@
   box-shadow: var(--inset-bevel), 0 0 0 2px var(--brass-lit);
 }
 
+/* Inline rename input — stretches to fill the name slot in the row */
+.inlineEdit {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap);
+  /* Override the default nameInput sizing so it fits inside the playerRow */
+  font-size: var(--t-name);
+}
+
 .addBtn {
   min-height: var(--tap);
   min-width: var(--tap);
@@ -141,27 +150,109 @@
   padding: var(--gap-lg) 0;
 }
 
+/*
+ * Row layout: [name-btn (flex 1, truncates)] [▲▼ pair (fixed)] [Remove (fixed)]
+ * On a 360px phone all three fit without overflow.
+ */
 .playerRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0;
   min-height: var(--tap);
   background: var(--felt-dark);
   border: 1px solid var(--brass-dim);
   border-radius: var(--radius-card);
-  padding: 0 var(--gap-md);
+  padding: 0 0 0 var(--gap-md);
   box-shadow: var(--shadow-soft);
+  overflow: hidden; /* contain the inlineEdit border-radius */
+}
+
+/* Tappable name area — acts as the "Edit" affordance */
+.playerNameBtn {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0;
+  /* inherit colour from parent so it reads as text, not a chrome button */
+  color: inherit;
+}
+
+.playerNameBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 2px;
+  border-radius: var(--radius-card);
 }
 
 .playerName {
   font-family: var(--font-body);
   font-size: var(--t-name);
   color: var(--ivory);
-  flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ── Reorder controls (▲ ▼) ──────────────────────────────────────── */
+.moveControls {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  /* Each button is var(--tap)/2 tall; together they fill the row height */
+}
+
+.moveBtn {
+  min-width: var(--tap);
+  /* Split the 48px tap target between two stacked buttons */
+  height: calc(var(--tap) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  /* Ghost brass border — thin, quiet */
+  border: 1px solid var(--brass-dim);
+  border-top: none;
+  border-right: none;
+  border-left: 1px solid var(--brass-dim);
+  color: var(--brass-dim);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.moveBtn:first-child {
+  border-top: none;
+  border-bottom: 1px solid var(--brass-dim);
+}
+
+.moveBtn:not(:disabled):hover,
+.moveBtn:not(:disabled):active {
+  color: var(--brass-lit);
+  border-color: var(--brass-lit);
+}
+
+.moveBtn:not(:disabled):active {
+  color: var(--brass);
+}
+
+.moveBtn:disabled,
+.moveBtn[aria-disabled='true'] {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.moveBtn:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 2px;
 }
 
 .removeBtn {
@@ -174,7 +265,7 @@
   font-family: var(--font-body);
   font-size: var(--t-label);
   cursor: pointer;
-  border-radius: var(--radius-card);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
   transition: color 0.15s;
   flex-shrink: 0;
 }
@@ -187,6 +278,16 @@
 .removeBtn:focus-visible {
   outline: 2px solid var(--brass-lit);
   outline-offset: 2px;
+}
+
+/* ── Seating-order hint ───────────────────────────────────────────── */
+.seatHint {
+  font-family: var(--font-body);
+  font-size: var(--t-label);
+  color: var(--ivory-dim);
+  text-align: center;
+  margin: 0;
+  opacity: 0.7;
 }
 
 /* ── Footer: start button ────────────────────────────────────────── */
@@ -244,7 +345,8 @@
   .nameInput,
   .addBtn,
   .removeBtn,
-  .startBtn {
+  .startBtn,
+  .moveBtn {
     transition: none;
   }
 }

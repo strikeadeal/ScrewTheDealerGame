@@ -6,6 +6,7 @@ export interface TurnStripProps {
   guesserName: string
   callNumber: 1 | 2
   phase: Phase
+  cardsLeft: number
 }
 
 const showCall = (phase: Phase): boolean =>
@@ -16,6 +17,7 @@ export default function TurnStrip({
   guesserName,
   callNumber,
   phase,
+  cardsLeft,
 }: TurnStripProps) {
   const callLabel = callNumber === 1 ? 'First call' : 'Second call'
 
@@ -31,6 +33,9 @@ export default function TurnStrip({
         {showCall(phase) && (
           <span className={styles.callBadge}>{callLabel}</span>
         )}
+        <span className={styles.cardsLeft} aria-label={`${cardsLeft} cards left in deck`}>
+          {cardsLeft} left
+        </span>
       </div>
 
       <div className={styles.seat}>

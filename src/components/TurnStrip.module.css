@@ -72,3 +72,14 @@
   padding: 2px var(--gap-sm);
   white-space: nowrap;
 }
+
+/* ── Deck remaining — quiet plaque-style count ───────────────────── */
+.cardsLeft {
+  font-family: var(--font-display);
+  font-size: var(--t-plaque);
+  letter-spacing: var(--track-plaque);
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  white-space: nowrap;
+  opacity: 0.7;
+}

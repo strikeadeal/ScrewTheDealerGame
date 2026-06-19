@@ -32,7 +32,26 @@ Each round there is a **dealer**, and the player to their **left** is the **gues
 
 **Deck exhaustion:** when the deck can't fill a round it reshuffles a fresh 52 and
 says so. The Board keeps accumulating across the whole night — it's the running
-record of what's come up. **End the night** at any time for a drink-tally summary.
+record of what's come up. **End the night** at any time for a drink-tally summary
+(it asks to confirm first, so a stray tap won't close out the round).
+
+**During play, the table header gives you:**
+
+- **Undo** — step back through the last draws and calls when the phone gets
+  fumbled or a value is tapped by mistake, so the tally never gets argued over.
+- **Tally** — peek at the live standings mid-game without ending the night; the
+  player drinking the most is flagged in red.
+- The **cards-left** count under the dealer/guesser names, so you can see a
+  reshuffle coming.
+
+**The night is saved as you go.** The roster, the Board, and the running tally are
+written to the device, so locking the phone, switching apps, or an accidental
+refresh picks up exactly where you left off — important for a game that runs all
+night from the Home Screen.
+
+**Setting up the table:** on the roster screen, tap a name to fix a typo, and use
+the ▲ ▼ controls to reorder players so the list matches who actually sits where —
+the deal passes left in listed order.
 
 ## Add it to your iPhone Home Screen (Safari)
 

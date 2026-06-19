@@ -66,14 +66,23 @@ export interface GameState {
   tally: Record<string, number>
   /** True for one render after the deck was rebuilt, so the UI can announce it. */
   reshuffled: boolean
+  /**
+   * Snapshots for undo. Each entry is stored with its own `past` replaced by
+   * `[]` to avoid unbounded nesting — depth is capped at 10 entries.
+   * Cleared on startGame / newGame / endGame so you cannot undo across those.
+   */
+  past: GameState[]
 }
 
 export type GameAction =
   | { type: 'addPlayer'; name: string }
   | { type: 'removePlayer'; id: string }
+  | { type: 'renamePlayer'; id: string; name: string }
+  | { type: 'movePlayer'; id: string; direction: 'up' | 'down' } // reorder within the seating list
   | { type: 'startGame' }
   | { type: 'drawCard' } // begin a round: take top card face-down
   | { type: 'guess'; value: Value } // first or second call, depending on phase
   | { type: 'nextRound' } // from verdict: file the card, pass the deal left
   | { type: 'endGame' }
   | { type: 'newGame' } // back to roster, keep players
+  | { type: 'undo' }
